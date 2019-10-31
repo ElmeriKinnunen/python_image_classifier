@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask   
+from flask import Flask, request
 from keras.models import model_from_json      
 from keras.preprocessing import image
 #from keras.applications import imagenet_utils
@@ -11,22 +11,23 @@ controller = Flask(__name__)
 classifier = None
 
     
-@controller.route("/predict")                  
-def predict():              
-    test_image = prepare_image()   
-    result = classifier.predict(test_image)
+@controller.route("/predict", methods=['POST'])                  
+def predict():
+    print("--- REQUEST RECEIVED ---")
+    img = request.files['photo']
+    img = prepare_image(img)
+    result = classifier.predict(img)
     result = get_class_name(result)
     print(result)
-    return "Result = " + result
+    return result
 
-def prepare_image():
-     #pizza = 'dataset/newpics/pizza/images401.jpg'
-    scissors = 'dataset/test_set/camera/960x0.jpg'     
-    test_image = image.load_img(scissors, target_size = (128, 128))
-    test_image = image.img_to_array(test_image)
-    test_image = np.expand_dims(test_image, axis = 0)
+def prepare_image(img):
+    img = image.load_img(img, target_size = (128, 128))
+    img = image.img_to_array(img)
+    img = np.expand_dims(img, axis = 0)
+    
     #test_image = imagenet_utils.preprocess_input(test_image)
-    return test_image
+    return img
 
 def load_model():
     global classifier
