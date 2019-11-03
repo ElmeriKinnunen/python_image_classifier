@@ -55,16 +55,16 @@ test_set = test_datagen.flow_from_directory('dataset/test_set',
 #Fitting the images to the model
 classifier.fit_generator(training_set,
                          steps_per_epoch = 2000,
-                         epochs = 10,
+                         epochs = 20,
                          validation_data = test_set,
                          validation_steps = 700)
 
 #Save model & weights
 classifier_json = classifier.to_json()
-with open('cnn_json', 'w') as json_file:
+with open('cnn_json2', 'w') as json_file:
     json_file.write(classifier_json)
 
-classifier.save_weights("classifier.h5")
+classifier.save_weights("classifier2.h5")
 
 
 #PREDICTIONS

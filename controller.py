@@ -31,11 +31,11 @@ def prepare_image(img):
 
 def load_model():
     global classifier
-    json_file = open('cnn_json', 'r')
+    json_file = open('cnn_json2', 'r')
     classifier_json = json_file.read()
     json_file.close()
     classifier = model_from_json(classifier_json)
-    classifier.load_weights('classifier.h5')
+    classifier.load_weights('classifier2.h5')
     #classifier.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
     print("Classifier Ready")
     return classifier
