@@ -1,9 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, request
+from flask import Flask, request, jsonify, json
 from keras.models import model_from_json      
 from keras.preprocessing import image
-#from keras.applications import imagenet_utils
 #import tensorflow as tf
 import numpy as np
 
@@ -17,16 +16,13 @@ def predict():
     img = request.files['photo']
     img = prepare_image(img)
     result = classifier.predict(img)
-    result = get_class_name(result)
-    print(result)
-    return result
-
-def prepare_image(img):
-    img = image.load_img(img, target_size = (128, 128))
-    img = image.img_to_array(img)
-    img = np.expand_dims(img, axis = 0)
+    return get_class_name(result)
     
-    #test_image = imagenet_utils.preprocess_input(test_image)
+
+def prepare_image(sent_img):
+    img = image.load_img(sent_img, target_size = (128, 128))
+    img = image.img_to_array(img)/255
+    img = np.expand_dims(img, axis = 0)
     return img
 
 def load_model():
@@ -41,29 +37,23 @@ def load_model():
     return classifier
 
 def get_class_name(result):
-    print(result)
-    if result[0][0] == 1:
-        return "Airplane"
-    elif result[0][1] == 1:
-        return "Camera"
-    elif result[0][2] == 1:
-        return "Chair"
-    elif result[0][3] == 1:
-        return "Cougar"
-    elif result[0][4] == 1:
-        return "Crocodile"
-    elif result[0][5] == 1:
-        return "Dog"
-    elif result[0][6] == 1:
-        return "Laptop"
-    elif result[0][7] == 1:
-        return "Pizza"
-    elif result[0][8] == 1:
-        return "Scissors"
-    elif result[0][9] == 1:
-        return "Watch"
-
+    result_to_class = ['Airplane', 'Camera', 'Chair', 'Cougar', 'Crocodile', 'Dog', 'Laptop', 'Pizza', 'Scissors', 'Watch']
+    index = np.argsort(result[0,:])
    
+    print(result_to_class[index[9]], ' Probability', result[0, index[9]] )
+    print(result_to_class[index[8]], ' Probability', result[0, index[8]] )
+    print(result_to_class[index[7]], ' Probability', result[0, index[7]] )
+    
+    predResult1 = '{0:.3g}'.format(result[0, index[9]] * 100)
+    predResult2 = '{0:.3g}'.format(result[0, index[8]] * 100)
+    predResult3 = '{0:.3g}'.format(result[0, index[7]] * 100)
+    
+    response = jsonify({
+            "pred1": { result_to_class[index[9]]: str(predResult1)},
+            "pred2": { result_to_class[index[8]]: str(predResult2)},
+            "pred3": {result_to_class[index[7]]: str(predResult3)}
+            })
+    return response
 
 if __name__ == "__main__":
     print("Running app and model")
