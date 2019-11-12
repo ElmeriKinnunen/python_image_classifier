@@ -27,17 +27,17 @@ def prepare_image(sent_img):
 
 def load_model():
     global classifier
-    json_file = open('cnn_json2', 'r')
+    json_file = open('cnn_json', 'r')
     classifier_json = json_file.read()
     json_file.close()
     classifier = model_from_json(classifier_json)
-    classifier.load_weights('classifier2.h5')
+    classifier.load_weights('classifier.h5')
     #classifier.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
     print("Classifier Ready")
     return classifier
 
 def get_class_name(result):
-    result_to_class = ['Airplane', 'Camera', 'Chair', 'Cougar', 'Crocodile', 'Dog', 'Laptop', 'Pizza', 'Scissors', 'Watch']
+    result_to_class = ['Camera', 'Cat', 'Chair', 'Cup', 'Dog', 'Laptop', 'Pizza', 'Plant', 'Scissors', 'Watch']
     index = np.argsort(result[0,:])
    
     print(result_to_class[index[9]], ' Probability', result[0, index[9]] )
