@@ -2,10 +2,7 @@
 
 # building the CNN
 from keras.models import Sequential
-from keras.layers import Conv2D
-from keras.layers import MaxPooling2D
-from keras.layers import Flatten
-from keras.layers import Dense
+from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 
 # initialize the CNN
 classifier = Sequential()
@@ -27,6 +24,7 @@ classifier.add(Flatten())
 
 #Full Connection
 classifier.add(Dense(units = 128, activation = "relu"))
+classifier.add(Dropout(0.5))
 classifier.add(Dense(units = 10, activation = "softmax"))
 
 classifier.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
@@ -55,29 +53,19 @@ test_set = test_datagen.flow_from_directory('dataset/test_set',
 #Fitting the images to the model
 classifier.fit_generator(training_set,
                          steps_per_epoch = 2000,
-                         epochs = 20,
+                         epochs = 30,
                          validation_data = test_set,
                          validation_steps = 700)
 
 #Save model & weights
 classifier_json = classifier.to_json()
-with open('cnn_json2', 'w') as json_file:
+with open('cnn_json', 'w') as json_file:
     json_file.write(classifier_json)
 
-classifier.save_weights("classifier2.h5")
-
-
-#PREDICTIONS
-import numpy as np
-from keras.preprocessing import image
-
-test_image = image.load_img('dataset/test_set/crocodile/image_0046.jpg',  target_size = (128, 128))
-test_image = image.img_to_array(test_image)
-test_image = np.expand_dims(test_image, axis = 0)
-result = classifier.predict(test_image)
+classifier.save_weights("classifier.h5")
 
 #UNCOMMENT TO SEE CNN CATEGORY OUTPUT INDICES
-training_set.class_indices
+#training_set.class_indices
 
 
 
