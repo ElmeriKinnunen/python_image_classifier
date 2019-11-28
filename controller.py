@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, request, jsonify, json
+from flask import Flask, request, jsonify
 from keras.models import model_from_json      
 from keras.preprocessing import image
-#import tensorflow as tf
+
 import numpy as np
 
 controller = Flask(__name__)           
@@ -55,7 +55,7 @@ def get_class_name(result):
     return response
 
 if __name__ == "__main__":
-    print("Running app and model")
+    print("Running")
     load_model()
-    controller.run(debug = False, threaded = False)                  
+    controller.run(debug = False, threaded = False, host='0.0.0.0')                  
     
