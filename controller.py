@@ -37,7 +37,7 @@ def load_model():
     return classifier
 
 def get_class_name(result):
-    result_to_class = ['Camera', 'Cat', 'Chair', 'Cup', 'Dog', 'Laptop', 'Pizza', 'Plant', 'Scissors', 'Watch']
+    result_to_class = ['Cat', 'Cup', 'Dog', 'Laptop', 'Pizza', 'Plant', 'Scissors', 'Watch']
     index = np.argsort(result[0,:])
    
     print(result_to_class[index[9]], ' Probability', result[0, index[9]] )
@@ -58,5 +58,5 @@ def get_class_name(result):
 if __name__ == "__main__":
     print("Running app and model")
     load_model()
-    controller.run(debug = False, threaded = False)                  
+    controller.run(debug = False, threaded = False, host='0.0.0.0')                  
     
