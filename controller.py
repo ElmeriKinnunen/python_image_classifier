@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, request, jsonify, json
+from flask import Flask, request, jsonify
 from keras.models import model_from_json      
 from keras.preprocessing import image
-#import tensorflow as tf
+
 import numpy as np
 
 controller = Flask(__name__)           
@@ -32,7 +32,6 @@ def load_model():
     json_file.close()
     classifier = model_from_json(classifier_json)
     classifier.load_weights('classifier.h5')
-    #classifier.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
     print("Classifier Ready")
     return classifier
 
@@ -40,9 +39,9 @@ def get_class_name(result):
     result_to_class = ['Cat', 'Cup', 'Dog', 'Laptop', 'Pizza', 'Plant', 'Scissors', 'Watch']
     index = np.argsort(result[0,:])
    
-    print(result_to_class[index[9]], ' Probability', result[0, index[9]] )
-    print(result_to_class[index[8]], ' Probability', result[0, index[8]] )
-    print(result_to_class[index[7]], ' Probability', result[0, index[7]] )
+    #print(result_to_class[index[9]], ' Probability', result[0, index[9]] )
+    #print(result_to_class[index[8]], ' Probability', result[0, index[8]] )
+    #print(result_to_class[index[7]], ' Probability', result[0, index[7]] )
     
     predResult1 = '{0:.3g}'.format(result[0, index[9]] * 100)
     predResult2 = '{0:.3g}'.format(result[0, index[8]] * 100)
@@ -56,7 +55,7 @@ def get_class_name(result):
     return response
 
 if __name__ == "__main__":
-    print("Running app and model")
+    print("Running")
     load_model()
     controller.run(debug = False, threaded = False, host='0.0.0.0')                  
     
