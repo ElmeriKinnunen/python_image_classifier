@@ -9,7 +9,6 @@ import numpy as np
 controller = Flask(__name__)           
 classifier = None
 
-    
 @controller.route("/predict", methods=['POST'])                  
 def predict():
     print("--- REQUEST RECEIVED ---")
@@ -39,18 +38,21 @@ def get_class_name(result):
     result_to_class = ['Cat', 'Cup', 'Dog', 'Laptop', 'Pizza', 'Plant', 'Scissors', 'Watch']
     index = np.argsort(result[0,:])
    
-    #print(result_to_class[index[9]], ' Probability', result[0, index[9]] )
-    #print(result_to_class[index[8]], ' Probability', result[0, index[8]] )
     #print(result_to_class[index[7]], ' Probability', result[0, index[7]] )
+    #print(result_to_class[index[6]], ' Probability', result[0, index[6]] )
+    #print(result_to_class[index[5]], ' Probability', result[0, index[5]] )
+    #print(result_to_class[index[4]], ' Probability', result[0, index[4]] )
     
-    predResult1 = '{0:.3g}'.format(result[0, index[9]] * 100)
-    predResult2 = '{0:.3g}'.format(result[0, index[8]] * 100)
-    predResult3 = '{0:.3g}'.format(result[0, index[7]] * 100)
+    predResult1 = '{0:.3g}'.format(result[0, index[7]] * 100)
+    predResult2 = '{0:.3g}'.format(result[0, index[6]] * 100)
+    predResult3 = '{0:.3g}'.format(result[0, index[5]] * 100)
+    predResult4 = '{0:.3g}'.format(result[0, index[4]] * 100)
     
     response = jsonify({
-            "pred1": { result_to_class[index[9]]: str(predResult1)},
-            "pred2": { result_to_class[index[8]]: str(predResult2)},
-            "pred3": {result_to_class[index[7]]: str(predResult3)}
+            "pred1": { result_to_class[index[7]]: str(predResult1)},
+            "pred2": { result_to_class[index[6]]: str(predResult2)},
+            "pred3": {result_to_class[index[5]]: str(predResult3)},
+            "pred4": {result_to_class[index[4]]: str(predResult4)}
             })
     return response
 

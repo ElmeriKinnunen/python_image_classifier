@@ -1,23 +1,23 @@
 # -*- coding: utf-8 -*-
+
 from keras.models import Sequential
 from keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Dropout
 
 classifier = Sequential()
 
-# Convolution
+#Convolution
 classifier.add(Conv2D(32, (3, 3), input_shape=(128, 128, 3), activation="relu"))
-classifier.add(MaxPooling2D(pool_size=(2, 2)))
-
 classifier.add(Conv2D(32, (3, 3), activation="relu"))
 classifier.add(MaxPooling2D(pool_size=(2, 2)))
 
+classifier.add(Conv2D(32, (3, 3), activation="relu"))
 classifier.add(Conv2D(64, (6, 6), activation="relu"))
 classifier.add(MaxPooling2D(pool_size=(2, 2)))
 
 # Flatten
 classifier.add(Flatten())
 
-#ANN
+#Full Connection
 classifier.add(Dense(units = 128, activation = "relu"))
 classifier.add(Dropout(0.5))
 
@@ -27,10 +27,9 @@ classifier.add(Dropout(0.5))
 classifier.add(Dense(units = 128, activation = "relu"))
 classifier.add(Dropout(0.5))
 
-classifier.add(Dense(units = 10, activation = "softmax"))
+classifier.add(Dense(units = 8, activation = "softmax"))
 
 classifier.compile(optimizer="adam", loss="categorical_crossentropy", metrics=["accuracy"])
-
 
 
 #Image preprocessing and altering
@@ -52,7 +51,6 @@ test_set = test_datagen.flow_from_directory('../dataset/test_set',
                                             target_size = (128, 128), 
                                             batch_size = 32,
                                             class_mode = 'categorical')
-#Fitting the images to the model
 classifier.fit_generator(training_set,
                          steps_per_epoch = 2000,
                          epochs = 50,
@@ -61,14 +59,13 @@ classifier.fit_generator(training_set,
 
 #Save model & weights
 classifier_json = classifier.to_json()
-with open('cnn_demo50', 'w') as json_file:
+with open('cnn_demo503', 'w') as json_file:
     json_file.write(classifier_json)
 
-classifier.save_weights("classifier50.h5")
+classifier.save_weights("classifier503.h5")
 
 #UNCOMMENT TO SEE CNN CATEGORY OUTPUT INDICES
 #training_set.class_indices
-
 
 
 
