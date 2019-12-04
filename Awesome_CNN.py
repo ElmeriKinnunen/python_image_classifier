@@ -59,10 +59,10 @@ classifier.fit_generator(training_set,
 
 #Save model & weights
 classifier_json = classifier.to_json()
-with open('cnn_demo503', 'w') as json_file:
+with open('cnn_demo', 'w') as json_file:
     json_file.write(classifier_json)
 
-classifier.save_weights("classifier503.h5")
+classifier.save_weights("classifier.h5")
 
 #UNCOMMENT TO SEE CNN CATEGORY OUTPUT INDICES
 #training_set.class_indices
